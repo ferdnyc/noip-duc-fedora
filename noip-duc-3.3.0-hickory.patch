@@ -1,0 +1,46 @@
+--- noip-duc-3.3.0/Cargo.toml	2024-09-16 20:45:58.000000000 -0400
++++ noip-duc-3.3.0/Cargo.toml.hickory-dns	2025-04-02 04:45:04.907716604 -0400
+@@ -34,7 +34,7 @@
+ minreq = { version = "^2.6", features = ["https-rustls"] }
+ percent-encoding = "^2"
+ thiserror = "1.0"
+-trust-dns-resolver = "^0.23"
++hickory-resolver = "^0.24"
+ url = "^2.2"
+ 
+ [target.'cfg(unix)'.dependencies]
+--- noip-duc-3.3.0/src/dns_method.rs	2024-09-16 20:41:42.000000000 -0400
++++ noip-duc-3.3.0/src/dns_method.rs.hickory	2025-04-02 04:54:49.683995600 -0400
+@@ -4,9 +4,9 @@
+ use std::time::Duration;
+ 
+ use log::debug;
+-use trust_dns_resolver::config::{NameServerConfig, Protocol, ResolverConfig, ResolverOpts};
+-use trust_dns_resolver::proto::rr::rdata::txt::TXT;
+-use trust_dns_resolver::Resolver;
++use hickory_resolver::config::{NameServerConfig, Protocol, ResolverConfig, ResolverOpts};
++use hickory_resolver::proto::rr::rdata::txt::TXT;
++use hickory_resolver::Resolver;
+ 
+ const IPCAST1: &str = "ipcast1.dynupdate.no-ip.com:8253";
+ const IPCAST2: &str = "ipcast2.dynupdate.no-ip.com:8253";
+@@ -29,7 +29,7 @@
+     NoIpInTxtAnswers,
+ 
+     #[error("Failed to resolve; {0}")]
+-    TrustResolveError(#[from] trust_dns_resolver::error::ResolveError),
++    ResolveError(#[from] hickory_resolver::error::ResolveError),
+ 
+     #[error("Failed to create dns method with {0} as resolver; possibly no internet connection")]
+     NsLookup(Cow<'static, str>),
+--- noip-duc_3.3.0/src/dns_method.rs	2025-04-02 05:05:47.253601467 -0400
++++ noip-duc_3.3.0/src/dns_method.rs.hickory	2025-04-02 05:05:39.734288265 -0400
+@@ -183,7 +183,7 @@
+             })
+         }
+ 
+-        Resolver::new(config, self.opts).map_err(|e| Error::CreateResolver(format!("{e}")))
++        Resolver::new(config, self.opts.clone()).map_err(|e| Error::CreateResolver(format!("{e}")))
+     }
+ 
+     fn for_ipcast() -> Result<Self, Error> {

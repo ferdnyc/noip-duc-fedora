@@ -1,0 +1,11 @@
+--- noip-duc-3.3.0/Cargo.toml	2024-09-16 20:45:58.000000000 -0400
++++ noip-duc-3.3.0/Cargo.toml.clap-version	2025-04-02 04:21:03.937245859 -0400
+@@ -26,7 +26,7 @@
+ # It is absolutely not necessary for this program to require these constraints.
+ # These constraints may be relaxed in v5 or we may need to find a cli args
+ # parser that is more suited to command line utilities.
+-clap = { version = "3.2.21", features = ["cargo", "derive", "env"] }
++clap = { version = "^3.2", features = ["cargo", "derive", "env"] }
+ env_logger = "^0.11"
+ form_urlencoded = "^1"
+ humantime = "^2"
