@@ -26,6 +26,8 @@ Patch1:         noip-duc-3.3.0-hickory.patch
 BuildRequires:  cargo-rpm-macros >= 26
 BuildRequires:  systemd-rpm-macros
 
+Obsoletes:      noip < 2.1.20
+
 %define _description %{expand:
 No-IP Dynamic Update Client (https://www.noip.com).}
 
@@ -56,6 +58,12 @@ install -m 644 -D -t %{buildroot}%{_unitdir}/ %{SOURCE2}
 %check
 %cargo_test
 %endif
+
+%pre
+# Migrate settings from older client, if available
+if [ -f /etc/no-ip2.conf ]; then
+  /usr/bin/noip-duc --import >> /etc/sysconfig/noip-duc
+fi
 
 %files
 %license LICENSE
