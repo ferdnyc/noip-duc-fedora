@@ -10,8 +10,22 @@ Release:        %autorelease
 Summary:        No-IP Dynamic Update Client (https://www.noip.com)
 
 SourceLicense:  Apache-2.0
-# FIXME: paste output of %%cargo_license_summary here
-License:        # FIXME
+
+# (MIT OR Apache-2.0) AND Unicode-DFS-2016
+# Apache-2.0
+# Apache-2.0 AND ISC AND (MIT OR Apache-2.0)
+# Apache-2.0 OR ISC OR MIT
+# Apache-2.0 OR MIT
+# BSD-2-Clause OR Apache-2.0 OR MIT
+# ISC
+# MIT
+# MIT OR Apache-2.0
+# MIT OR Apache-2.0 OR Zlib
+# MPL-2.0
+# Unicode-3.0
+# Unlicense OR MIT
+# Zlib OR Apache-2.0 OR MIT
+License:        (MIT OR Apache-2.0 AND Unicode-DFS-2016) AND Apache-2.0 AND (Apache-2.0 AND ISC AND (MIT OR Apache-2.0)) AND (Apache-2.0 OR ISC OR MIT) AND (Apache-2.0 OR MIT) AND (BSD-2-Clause OR Apache-2.0 OR MIT) AND ISC AND MIT AND (MIT OR Apache-2.0) AND (MIT OR Apache-2.0 OR Zlib) AND MPL-2.0 AND Unicode-3.0 AND (Unlicense OR MIT)
 # LICENSE.dependencies contains a full license breakdown
 
 URL:            https://www.noip.com
@@ -42,10 +56,14 @@ No-IP Dynamic Update Client (https://www.noip.com).}
 
 %build
 %cargo_build
-echo "\n=========== CARGO LICENSE SUMMARY ==============\n"
-echo -n "License: "
-%{cargo_license_summary}
-echo "\n\n========= END LICENSE SUMMARY ================\n"
+
+%global _license_summary %{expand: %{cargo_license_summary}}
+%{echo:
+========= CARGO LICENSE SUMMARY ==============
+%{_license_summary}
+========== END LICENSE SUMMARY ===============
+}
+
 %{cargo_license} > LICENSE.dependencies
 
 %install
