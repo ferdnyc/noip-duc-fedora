@@ -6,7 +6,7 @@ After=network-online.target
 [Service]
 Type=simple
 EnvironmentFile=/etc/sysconfig/noip-duc
-ExecStart=/usr/sbin/noip-duc
+ExecStart=/usr/bin/noip-duc
 Restart=on-failure
 RestartSec=30
 
